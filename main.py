@@ -3,7 +3,7 @@ from model import app, db
 # from covidcases.data.models import db
 from sqlalchemy import exc
 from flask import Blueprint, render_template, flash
-from forms.entry_forms import CreateEntryForm
+from forms.entry_forms import CreateEntryForm, CoronaSearchForm
 from model import User, db
 from flask import current_app, redirect, request, url_for
 import requests
@@ -24,6 +24,7 @@ import requests
 def create_entry():
     entries = [entry for entry in User.query.all()]
     form = CreateEntryForm()
+
     print("CREATE ENTRY REQ METHOD: " + request.method)
     # getting ip adress
     if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
@@ -46,14 +47,40 @@ def create_entry():
     if request.method == 'POST':
 
         print("HELLOS YOU DID A POST!!!")
-        info = User(form.location.data, form.age.data, form.symptoms.data,
-                    form.ip_address.data, form.travel_history.data)
+        info = User(form.city.data, form.state.data, form.age.data,
+                    str(form.symptoms.data), form.ip_address.data, form.tested.data)
         db.session.add(info)
         db.session.commit()
         return redirect('/')
 
     return render_template("create_entry.htm",
                            form=form, entries=entries)
+
+
+@app.route('/results', methods=['GET', 'POST'])
+def do_search():
+    search = CoronaSearchForm()
+    if request.method == 'POST':
+        results = []
+        search_string = search.data['search']
+
+        print(search_string)
+        print(search.data['select'])
+        if search.data['search'] != '':
+            if search.data['select'] == 'City':
+                qry = User.query.filter_by(city=search.data['search'])
+                results = qry.all()
+            elif search.data['select'] == 'State':
+                qry = User.query.filter_by(state=search.data['search'])
+                results = qry.all()
+            elif search.data['select'] == 'Age':
+                qry = User.query.filter_by(age=search.data['search'])
+                results = qry.all()
+        # display results
+        return render_template('results.htm', results=results, form=search)
+    return render_template("results.htm",
+                           form=search, results=[])
+
     # form = CreateEntryForm(request.form)
     # if request.method == 'POST' and form.validate():
     #     info = User(form.location.data, form.age.data, form.symptoms.data,

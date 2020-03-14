@@ -15,6 +15,11 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   </head>
+  <style>
+    .content {
+      margin: 30px;
+    }
+  </style>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="#">Navigation ></a>
@@ -43,26 +48,32 @@
             data-target="#myModal"
             >Submit Info</a
           >
+          <a class="nav-item nav-link" href="{{ url_for('do_search') }}"
+            >Search Database</a
+          >
         </div>
       </div>
     </nav>
 
-    <h1>Coronavirus Tracker</h1>
-    <div class="top-pad">
-      <table class="table table-striped">
-        <tbody>
-          {% for data in entries %}
-          <tr>
-            <td>{{data.id}}</td>
-            <td>{{data.location}}</td>
-            <td>{{data.age}}</td>
-            <td>{{data.symptoms}}</td>
-            <td>{{data.ip_address}}</td>
-            <td>{{data.travel_history}}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+    <div class="content">
+      <h1>Coronavirus Tracker</h1>
+      <div class="top-pad">
+        <table class="table table-striped">
+          <tbody>
+            {% for data in entries %}
+            <tr>
+              <td>{{data.id}}</td>
+              <td>{{data.city}}</td>
+              <td>{{data.state}}</td>
+              <td>{{data.age}}</td>
+              <td>{{data.symptoms}}</td>
+              <td>{{data.ip_address}}</td>
+              <td>{{data.tested}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
     <!-- <button
       type="button"
@@ -94,11 +105,16 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
+
           <div class="modal-body">
             <form action="/" method="post" name="post">
               <div class="form-group">
-                <label for="exampleFormControlInput1">Location</label>
-                {{form.location}}
+                <label for="exampleFormControlInput1">City</label>
+                {{form.city}}
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlInput1">State</label>
+                {{form.state}}
               </div>
               <div class="form-group">
                 <label for="exampleFormControlInput1">Age</label>
@@ -120,8 +136,10 @@
                 </select> -->
               </div>
               <div class="form-group">
-                <label for="exampleFormControlInput1">Travel History</label>
-                {{form.travel_history}}
+                <label for="exampleFormControlInput1"
+                  >Have you been tested for COVID-19?</label
+                >
+                {{form.tested}}
               </div>
               <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">Post</button>

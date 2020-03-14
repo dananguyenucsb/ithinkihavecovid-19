@@ -1,0 +1,117 @@
+{% block content %}
+<head>
+    <!-- <title>Bootstrap Modal</title> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="">Navigation ></a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a
+            class="nav-item nav-link active"
+            href="{{ url_for('create_entry') }}"
+            >Home</a
+          >
+        
+          <a class="nav-item nav-link" href="{{ url_for('do_search') }}"
+            >Search Database</a
+          >
+        </div>
+      </div>
+    </nav>
+    <h1>Coronavirus Tracker</h1>
+
+    <div>
+        <form action="/results" method="post" name="post">
+            <div class="form-group">
+                {{ form.select}}
+                {{ form.search }}
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+    </div>
+    
+    <div class="top-pad">
+      <table class="table table-striped">
+        <tbody>
+          {% for data in results %}
+          <tr>
+            <td>{{data.id}}</td>
+            <td>{{data.city}}</td>
+            <td>{{data.state}}</td>
+            <td>{{data.age}}</td>
+            <td>{{data.symptoms}}</td>
+            <td>{{data.ip_address}}</td>
+            <td>{{data.tested}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <!-- <button
+      type="button"
+      class="btn btn-primary btn-large"
+      data-toggle="modal"
+      data-target="#myModal"
+    >
+      Submit a post
+    </button> -->
+
+  </body>
+</html>
+
+
+
+<!-- 
+<h1>Coronavirus Tracker Results</h1>
+<div>
+  <form action="/results" method="post" name="post">
+    <dl>
+      {{ form.select}}
+      <p>
+        {{ form.search }}
+      </p>
+    </dl>
+    <p><input type="submit" value="Search" /></p>
+  </form>
+</div>
+<div class="top-pad">
+  <table class="table table-striped">
+    <tbody>
+      {% for data in results %}
+      <tr>
+        <td>{{data.id}}</td>
+        <td>{{data.city}}</td>
+        <td>{{data.county}}</td>
+        <td>{{data.state}}</td>
+        <td>{{data.age}}</td>
+        <td>{{data.symptoms}}</td>
+        <td>{{data.ip_address}}</td>
+        <td>{{data.tested}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div> -->
+{% endblock %}
