@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import os
+import datetime
+
 from sqlalchemy.dialects.postgresql import ARRAY
 
 
@@ -26,6 +28,7 @@ class User(db.Model):
     ip_address = db.Column(db.String(255))
     tested = db.Column(db.String(255))
     in_contact = db.Column(db.String(255))
+    created_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
     def __init__(self, city, state, age, symptoms, ip_address, tested, in_contact):
         self.city = city
@@ -40,5 +43,5 @@ class User(db.Model):
         return "<Location %r>" % (self.location)
 
 
-db.drop_all()
+# db.drop_all()
 db.create_all()
