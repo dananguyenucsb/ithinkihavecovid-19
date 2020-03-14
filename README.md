@@ -1,1 +1,0 @@
-# ithinkihavecovid-19
