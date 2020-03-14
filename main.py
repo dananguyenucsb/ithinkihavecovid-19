@@ -12,16 +12,17 @@ import requests
 # main = Blueprint('main', __name__, template_folder='templates')
 
 
-@app.route('/')
-def index():
-    entries = [entry for entry in User.query.all()]
-    current_app.logger.info("Displaying all entries.")
+# @app.route('/')
+# def index():
+#     entries = [entry for entry in User.query.all()]
+#     current_app.logger.info("Displaying all entries.")
 
-    return render_template("entries.htm", entries=entries)
+#     return render_template("entries.htm", entries=entries)
 
 
-@app.route('/create', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def create_entry():
+    entries = [entry for entry in User.query.all()]
     form = CreateEntryForm()
     print("CREATE ENTRY REQ METHOD: " + request.method)
     # getting ip adress
@@ -52,7 +53,7 @@ def create_entry():
         return redirect('/')
 
     return render_template("create_entry.htm",
-                           form=form)
+                           form=form, entries=entries)
     # form = CreateEntryForm(request.form)
     # if request.method == 'POST' and form.validate():
     #     info = User(form.location.data, form.age.data, form.symptoms.data,

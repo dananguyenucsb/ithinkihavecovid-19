@@ -31,23 +31,47 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a class="nav-item nav-link active" href="{{ url_for('index') }}"
+          <a
+            class="nav-item nav-link active"
+            href="{{ url_for('create_entry') }}"
             >Home</a
           >
-          <a class="nav-item nav-link" href="{{ url_for('create_entry') }}"
+          <a
+            class="nav-item nav-link"
+            href="{{ url_for('create_entry') }}"
+            data-toggle="modal"
+            data-target="#myModal"
             >Submit Info</a
           >
         </div>
       </div>
     </nav>
-    <button
+
+    <h1>Coronavirus Tracker</h1>
+    <div class="top-pad">
+      <table class="table table-striped">
+        <tbody>
+          {% for data in entries %}
+          <tr>
+            <td>{{data.id}}</td>
+            <td>{{data.location}}</td>
+            <td>{{data.age}}</td>
+            <td>{{data.symptoms}}</td>
+            <td>{{data.ip_address}}</td>
+            <td>{{data.travel_history}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <!-- <button
       type="button"
       class="btn btn-primary btn-large"
       data-toggle="modal"
       data-target="#myModal"
     >
       Submit a post
-    </button>
+    </button> -->
 
     <div
       class="modal fade"
@@ -55,7 +79,7 @@
       tabindex="-1"
       role="dialog"
       aria-labelledby="purchaseLabel"
-      aria-hidden="true"
+      aria-hidden="false"
     >
       <div class="modal-dialog">
         <div class="modal-content">
@@ -71,7 +95,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <form action="/create" method="post" name="post">
+            <form action="/" method="post" name="post">
               <div class="form-group">
                 <label for="exampleFormControlInput1">Location</label>
                 {{form.location}}
