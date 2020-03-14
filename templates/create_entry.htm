@@ -108,12 +108,15 @@
 
           <div class="modal-body">
             <form action="/" method="post" name="post">
+              {{ form.hidden_tag() }} {{ form.csrf_token }}
               <div class="form-group">
                 <label for="exampleFormControlInput1">City</label>
                 {{form.city}}
               </div>
               <div class="form-group">
-                <label for="exampleFormControlInput1">State</label>
+                <label for="exampleFormControlInput1"
+                  >State (Abbreviation Only)</label
+                >
                 {{form.state}}
               </div>
               <div class="form-group">
@@ -123,26 +126,18 @@
               <div class="form-group">
                 <label for="exampleFormControlSelect2">Symptoms</label>
                 {{form.symptoms}}
-                <!-- <select
-                  multiple
-                  class="form-control"
-                  id="exampleFormControlSelect2"
-                  value="{{form.symptoms}}"
-                >
-                  <option>Fatigue/Tiredness</option>
-                  <option>Dry Cough</option>
-                  <option>Shortness of Breath</option>
-                  <option>Fever</option>
-                </select> -->
               </div>
               <div class="form-group">
                 <label for="exampleFormControlInput1"
                   >Have you been tested for COVID-19?</label
                 >
-                {{form.tested}}
+                {% if form.errors %} {{ form.errors }} {% endif
+                %}{{form.tested}}
               </div>
               <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Post</button>
+                {% if form.errors %} {{ form.errors }} {% endif
+                %}{{form.submit}}
+                <!-- <button type="submit" class="btn btn-primary">Post</button> -->
                 <!-- <input type="submit" value="Post!" /> -->
               </div>
             </form>

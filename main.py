@@ -43,16 +43,16 @@ def create_entry():
             form.ip_address.data = "CANT VERIFY"
     except Exception as e:
         form.ip_address.data = "CANT VERIFY"
-
-    if request.method == 'POST':
-
-        print("HELLOS YOU DID A POST!!!")
-        info = User(form.city.data, form.state.data, form.age.data,
-                    str(form.symptoms.data), form.ip_address.data, form.tested.data)
+    print("Going in")
+    if request.method == 'POST' and form.validate_on_submit():
+        print("IT WORKS")
+        info = User(form.city.data.lower(), form.state.data.lower(), form.age.data,
+                    str(form.symptoms.data), form.ip_address.data.lower(), form.tested.data)
         db.session.add(info)
         db.session.commit()
         return redirect('/')
-
+    else:
+        flash('Failed validation')
     return render_template("create_entry.htm",
                            form=form, entries=entries)
 
@@ -62,7 +62,7 @@ def do_search():
     search = CoronaSearchForm()
     if request.method == 'POST':
         results = []
-        search_string = search.data['search']
+        search_string = search.data['search'].lower()
 
         print(search_string)
         print(search.data['select'])
