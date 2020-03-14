@@ -19,6 +19,21 @@
     .content {
       margin: 30px;
     }
+    .pagination-page-info {
+      padding: 0.6em;
+      padding-left: 0;
+      width: 40em;
+      margin: 0.5em;
+      margin-left: 0;
+      font-size: 12px;
+    }
+    .pagination-page-info b {
+      color: black;
+      background: #6aa6ed;
+      padding-left: 2px;
+      padding: 0.1em 0.25em;
+      font-size: 150%;
+    }
   </style>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -36,14 +51,10 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a
-            class="nav-item nav-link active"
-            href="{{ url_for('create_entry') }}"
-            >Home</a
-          >
+          <a class="nav-item nav-link active" href="/">Home</a>
           <a
             class="nav-item nav-link"
-            href="{{ url_for('create_entry') }}"
+            href="/"
             data-toggle="modal"
             data-target="#myModal"
             >Submit Info</a
@@ -51,14 +62,36 @@
           <a class="nav-item nav-link" href="{{ url_for('do_search') }}"
             >Search Database</a
           >
+          <a class="nav-item nav-link" href="{{url_for('static', filename='resources.html')}}">Resources</a>
         </div>
       </div>
     </nav>
 
     <div class="content">
+      {% with messages = get_flashed_messages() %} {% if messages %}
+      <ul class="flashes">
+        {% for message in messages %}
+
+        <div class="alert alert-danger" role="alert">
+          <li>{{ message }}</li>
+        </div>
+
+        {% endfor %}
+      </ul>
+      {% endif %} {% endwith %}
       <h1>Coronavirus Tracker</h1>
-      <div class="top-pad">
+      <!-- <div class="top-pad">
         <table class="table table-striped">
+          <tr>
+            <td>ID</td>
+            <td>City</td>
+            <td>State</td>
+            <td>Age</td>
+            <td>Symptoms</td>
+            <td>Verified</td>
+            <td>Tested</td>
+            <td>In Contact</td>
+          </tr>
           <tbody>
             {% for data in entries %}
             <tr>
@@ -69,12 +102,48 @@
               <td>{{data.symptoms}}</td>
               <td>{{data.ip_address}}</td>
               <td>{{data.tested}}</td>
+              <td>{{data.in_contact}}</td>
             </tr>
             {% endfor %}
           </tbody>
         </table>
       </div>
-    </div>
+    </div> -->
+
+    <div class=content>
+    {{ pagination.info }}
+    {{ pagination.links }}
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <td>ID</td>
+          <td>City</td>
+          <td>State</td>
+          <td>Age</td>
+          <td>Symptoms</td>
+          <td>Verified</td>
+          <td>Tested</td>
+          <td>In Contact</td>
+        </tr>
+      </thead>
+      <tbody>
+        {% for data in entries %}
+        <tr>
+          <td>{{data.id}}</td>
+          <td>{{data.city}}</td>
+          <td>{{data.state}}</td>
+          <td>{{data.age}}</td>
+          <td>{{data.symptoms}}</td>
+          <td>{{data.ip_address}}</td>
+          <td>{{data.tested}}</td>
+          <td>{{data.in_contact}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {{ pagination.links }}
+  </div>
+
     <!-- <button
       type="button"
       class="btn btn-primary btn-large"
@@ -131,13 +200,24 @@
                 <label for="exampleFormControlInput1"
                   >Have you been tested for COVID-19?</label
                 >
-                {% if form.errors %} {{ form.errors }} {% endif
-                %}{{form.tested}}
+                {{form.tested}}
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlInput1"
+                  >Have you been in contact with someone who has
+                  COVID-19?</label
+                >
+                {{form.in_contact}}
               </div>
               <div class="modal-footer">
-                {% if form.errors %} {{ form.errors }} {% endif
-                %}{{form.submit}}
-                <!-- <button type="submit" class="btn btn-primary">Post</button> -->
+                {{ form.recaptcha }} {% if form.errors %}
+                <div class="alert alert-danger" role="alert">
+                  {{ form.errors }}
+                </div>
+                {%endif%}
+                <!-- {{form.submit}} -->
+                <button type="submit" class="btn btn-primary">Post</button>
+
                 <!-- <input type="submit" value="Post!" /> -->
               </div>
             </form>

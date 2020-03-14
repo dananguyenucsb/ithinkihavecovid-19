@@ -1,3 +1,4 @@
 Flask 
 Flask-SQLAlchemy
 flask_wtf
+flask-paginate

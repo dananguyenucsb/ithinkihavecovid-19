@@ -26,7 +26,9 @@ class CreateEntryForm(FlaskForm):
     ip_address = TextField("IP Address", validators=[DataRequired()])
 
     tested = SelectField(
-        "Tested", choices=[('Yes', 'Yes'), ('No', 'No')], validators=[DataRequired()])
+        "Tested", choices=[('Waiting', 'Waiting'), ('Yes', 'Yes'), ('No', 'No')], validators=[DataRequired()])
+    in_contact = SelectField(
+        "In Contact", choices=[('Yes', 'Yes'), ('No', 'No')], validators=[DataRequired()])
 
     submit = SubmitField('Submit')
     # recaptcha = RecaptchaField()

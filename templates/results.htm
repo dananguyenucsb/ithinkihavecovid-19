@@ -12,6 +12,26 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   </head>
+  <style>
+    .content {
+      margin: 30px;
+    }
+    .pagination-page-info {
+      padding: 0.6em;
+      padding-left: 0;
+      width: 40em;
+      margin: 0.5em;
+      margin-left: 0;
+      font-size: 12px;
+    }
+    .pagination-page-info b {
+      color: black;
+      background: #6aa6ed;
+      padding-left: 2px;
+      padding: 0.1em 0.25em;
+      font-size: 150%;
+    }
+  </style>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="">Navigation ></a>
@@ -30,12 +50,15 @@
         <div class="navbar-nav">
           <a
             class="nav-item nav-link active"
-            href="{{ url_for('create_entry') }}"
+            href="/"
             >Home</a
           >
         
           <a class="nav-item nav-link" href="{{ url_for('do_search') }}"
             >Search Database</a
+          >
+          <a class="nav-item nav-link" href="{{url_for('static', filename='resources.html')}}""
+            >Resources</a
           >
         </div>
       </div>
@@ -52,8 +75,18 @@
         </form>
     </div>
     
-    <div class="top-pad">
+    <!-- <div class="top-pad">
       <table class="table table-striped">
+        <tr>
+            <td>ID</td>
+            <td>City</td>
+            <td>State</td>
+            <td>Age</td>
+            <td>Symptoms</td>
+            <td>Verified</td>
+            <td>Tested</td>
+            <td>In Contact</td>
+          </tr>
         <tbody>
           {% for data in results %}
           <tr>
@@ -64,11 +97,46 @@
             <td>{{data.symptoms}}</td>
             <td>{{data.ip_address}}</td>
             <td>{{data.tested}}</td>
+            <td>{{data.in_contact}}</td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
-    </div>
+    </div> -->
+
+    <div class=content>
+        {{ pagination.info }}
+        {{ pagination.links }}
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <td>ID</td>
+              <td>City</td>
+              <td>State</td>
+              <td>Age</td>
+              <td>Symptoms</td>
+              <td>Verified</td>
+              <td>Tested</td>
+              <td>In Contact</td>
+            </tr>
+          </thead>
+          <tbody>
+            {% for data in results %}
+            <tr>
+              <td>{{data.id}}</td>
+              <td>{{data.city}}</td>
+              <td>{{data.state}}</td>
+              <td>{{data.age}}</td>
+              <td>{{data.symptoms}}</td>
+              <td>{{data.ip_address}}</td>
+              <td>{{data.tested}}</td>
+              <td>{{data.in_contact}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {{ pagination.links }}
+      </div>
     <!-- <button
       type="button"
       class="btn btn-primary btn-large"

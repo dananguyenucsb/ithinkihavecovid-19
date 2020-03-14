@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <!-- <title>Bootstrap Modal</title> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="">Navigation ></a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a
+            class="nav-item nav-link active"
+            href="/"
+            >Home</a
+          >
+
+          <a class="nav-item nav-link" href="{{ url_for('do_search') }}"
+            >Search Database</a
+          >
+          <a class="nav-item nav-link" href="{{url_for('static', filename='resources.html')}}">Resources</a>
+        </div>
+      </div>
+    </nav>
+    <style>
+      .content {
+        margin: 30px;
+      }
+    </style>
+    <div class="content">
+      <h1>Coronavirus Tracker</h1>
+
+      <p>
+        Try to talk to your doctor /health provider/hospital about this:
+        <a href = https://twitter.com/UWVirology/status/1237147812195741696?s=20>https://twitter.com/UWVirology/status/1237147812195741696?s=20</a>
+        <br /><br />
+        "Any doctor can take a sample and fill out this form and send it to UW.
+        Most doctors are following CDC guidelines still, and only testing people
+        with travel history, close contact with a known case, or pneumonia.
+        Those guidelines are just a formality, not a legal restriction."
+        <br /><br />
+        Also check out if there is a Labcorp near you. These guys will actually
+        test you for COVID-19, and it doesn’t hurt to call them up and ask.
+        Also, I’d email your health provider a link to their page:
+        <a href =https://www.labcorp.com/>https://www.labcorp.com/</a> so they can be aware and start helping to test
+        others coming in with symptoms too.
+        <br /><br />
+        And I understand if you are feeling too sick. So if you want, please
+        direct message my reddit account @appealingpotato the hospital / doctors
+        office that you’d normally go to, and I’ll shoot them an email for you!
+      </p>
+    </div>
+  </body>
+</html>
+
+<!-- 
+<h1>Coronavirus Tracker Results</h1>
+<div>
+  <form action="/results" method="post" name="post">
+    <dl>
+      {{ form.select}}
+      <p>
+        {{ form.search }}
+      </p>
+    </dl>
+    <p><input type="submit" value="Search" /></p>
+  </form>
+</div>
+<div class="top-pad">
+  <table class="table table-striped">
+    <tbody>
+      {% for data in results %}
+      <tr>
+        <td>{{data.id}}</td>
+        <td>{{data.city}}</td>
+        <td>{{data.county}}</td>
+        <td>{{data.state}}</td>
+        <td>{{data.age}}</td>
+        <td>{{data.symptoms}}</td>
+        <td>{{data.ip_address}}</td>
+        <td>{{data.tested}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div> -->
