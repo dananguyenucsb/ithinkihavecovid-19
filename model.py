@@ -48,5 +48,5 @@ class User(db.Model):
         return "<Location %r>" % (self.location)
 
 
-# db.drop_all()
+db.drop_all()
 db.create_all()

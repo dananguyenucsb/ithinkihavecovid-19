@@ -90,18 +90,17 @@ def create_entry():
         # if behind a proxy
         ip_address = request.environ['HTTP_X_FORWARDED_FOR']
 
-    # try:
-    #     resp = requests.get(
-    #         'http://ip-api.com/json/{}'.format(ip_address)).json()
-    #     if resp["status"] == "success":
-    #         form.ip_address.data = resp["city"] + \
-    #             " "+resp["regionName"]+" "+resp["country"]
-    #     else:
-    #         form.ip_address.data = "CANT VERIFY"
-    # except Exception as e:
-    #     form.ip_address.data = "CANT VERIFY"
+    try:
+        resp = requests.get(
+            'http://ip-api.com/json/{}'.format(ip_address)).json()
+        if resp["status"] == "success":
+            form.ip_address.data = resp["city"] + \
+                " "+resp["regionName"]+" "+resp["country"]
+        else:
+            form.ip_address.data = "CANT VERIFY"
+    except Exception as e:
+        form.ip_address.data = "CANT VERIFY"
     print("Going in")
-    form.ip_address.data = "san jose california usa"
 
     if form.ip_address.data != "CANT VERIFY":
         try:
