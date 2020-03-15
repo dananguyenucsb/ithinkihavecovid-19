@@ -83,8 +83,13 @@
         {% endfor %}
       </ul>
       {% endif %} {% endwith %}
-      <h1>Coronavirus Tracker</h1>
+      <h1>Self-Reported Coronavirus Tracker</h1>
+      <div>
+      <p>*Unfortunately, due to low budgets, I am using a free tier of the Google Maps API, hence it says "for development purposes only".</p>
+      <p>Click on the location points to check the count for that city:</p>
+
       {{mymap.html}}
+    </div>
       <!-- <div class="top-pad">
         <table class="table table-striped">
           <tr>

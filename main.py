@@ -60,23 +60,15 @@ def create_entry():
 
     # for map
     map_entries = get_entries_for_map()
-    # print(map_entries)
-    # map_coordinates = []
-
-    # for entry in map_entries:
-    #     address = str(entry[1]+" "+entry[2])
-    #     map_coordinates.append(get_coordinates(address))
-
-    # create map
 
     mymap = Map(
         identifier="view-side",
-        # lat=float(map_entries[0][1].split(" ")[0]),
-        # lng=float(map_entries[0][1].split(" ")[1]),
         lat=37.4300,
         lng=-122.1400,
-        markers=[(float(coord[1].split(" ")[0]), float(coord[1].split(" ")[1]))
-                 for coord in map_entries]
+        markers=[{"lat": float(coord[1].split(" ")[0]), "lng":float(coord[1].split(" ")[1]), "infobox": str(coord[0])}
+                 for coord in map_entries],
+        style="height:400px;width:100%;margin:0;"
+
     )
 
     # create forms
@@ -101,7 +93,6 @@ def create_entry():
     except Exception as e:
         form.ip_address.data = "CANT VERIFY"
     print("Going in")
-
     if form.ip_address.data != "CANT VERIFY":
         try:
             form.coordinates.data = str(
