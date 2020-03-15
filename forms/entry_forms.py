@@ -31,7 +31,7 @@ class CreateEntryForm(FlaskForm):
         "In Contact", choices=[('Yes', 'Yes'), ('No', 'No')], validators=[DataRequired()])
     coordinates = TextField("Coordinates", validators=[DataRequired()])
     submit = SubmitField('Submit')
-    # recaptcha = RecaptchaField()
+    recaptcha = RecaptchaField()
 
 
 class CoronaSearchForm(FlaskForm):
