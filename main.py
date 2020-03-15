@@ -58,19 +58,6 @@ def create_entry():
     pagination = Pagination(page=page, per_page=per_page, total=total,
                             css_framework='bootstrap4')
 
-    # for map
-    map_entries = get_entries_for_map()
-
-    mymap = Map(
-        identifier="view-side",
-        lat=map_entries[0][1].split(" ")[0],
-        lng=map_entries[0][1].split(" ")[1],
-        markers=[{"lat": float(coord[1].split(" ")[0]), "lng":float(coord[1].split(" ")[1]), "infobox": str(coord[0])}
-                 for coord in map_entries],
-        style="height:400px;width:100%;margin:0;"
-
-    )
-
     # create forms
     form = CreateEntryForm()
 
@@ -92,7 +79,9 @@ def create_entry():
             form.ip_address.data = "CANT VERIFY"
     except Exception as e:
         form.ip_address.data = "CANT VERIFY"
+
     print("Going in")
+
     if form.ip_address.data != "CANT VERIFY":
         try:
             form.coordinates.data = str(
@@ -101,6 +90,22 @@ def create_entry():
             form.coordinates.data = "CANT VERIFY"
     else:
         form.coordinates.data = "CANT VERIFY"
+
+    # for map
+    map_entries = get_entries_for_map()
+
+    mymap = Map(
+        identifier="view-side",
+        lat=map_entries[0][1].split(" ")[0],
+        lng=map_entries[0][1].split(" ")[1],
+        markers=[{
+            "icon": "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+            "lat": float(coord[1].split(" ")[0]),
+            "lng":float(coord[1].split(" ")[1]),
+            "infobox": str(coord[0])}
+            for coord in map_entries],
+        style="height:400px;width:100%;margin:0;"
+    )
 
     if request.method == 'POST':
         if form.validate():
