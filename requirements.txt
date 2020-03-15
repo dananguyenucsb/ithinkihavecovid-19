@@ -2,3 +2,5 @@ Flask
 Flask-SQLAlchemy
 flask_wtf
 flask-paginate
+flask-googlemaps
+geopy

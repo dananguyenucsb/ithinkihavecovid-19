@@ -29,7 +29,7 @@ class CreateEntryForm(FlaskForm):
         "Tested", choices=[('Waiting', 'Waiting'), ('Yes', 'Yes'), ('No', 'No')], validators=[DataRequired()])
     in_contact = SelectField(
         "In Contact", choices=[('Yes', 'Yes'), ('No', 'No')], validators=[DataRequired()])
-
+    coordinates = TextField("Coordinates", validators=[DataRequired()])
     submit = SubmitField('Submit')
     # recaptcha = RecaptchaField()
 

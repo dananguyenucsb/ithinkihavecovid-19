@@ -15,6 +15,9 @@ app.config['RECAPTCHA_USE_SSL'] = False
 app.config['RECAPTCHA_PUBLIC_KEY'] = '6LfkN-EUAAAAAMEUxpQGg7DdGHqhz0eY0_2S5aKu'
 app.config['RECAPTCHA_PRIVATE_KEY'] = '6LfkN-EUAAAAADXeLuqzoBOAg0F3f-b_oQEPiSzL'
 app.config['RECAPTCHA_OPTIONS'] = {'theme': 'white'}
+GOOGLEMAPS_KEY = "AIzaSyAsRuG0NnFmLNZlg6CWUTV8D2FA8gQo5xk"
+app.config['GOOGLEMAPS_KEY'] = GOOGLEMAPS_KEY
+
 
 db = SQLAlchemy(app)
 
@@ -29,8 +32,9 @@ class User(db.Model):
     tested = db.Column(db.String(255))
     in_contact = db.Column(db.String(255))
     created_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    coordinates = db.Column(db.String(255))
 
-    def __init__(self, city, state, age, symptoms, ip_address, tested, in_contact):
+    def __init__(self, city, state, age, symptoms, ip_address, tested, in_contact, coordinates):
         self.city = city
         self.state = state
         self.age = age
@@ -38,6 +42,7 @@ class User(db.Model):
         self.ip_address = ip_address
         self.tested = tested
         self.in_contact = in_contact
+        self.coordinates = coordinates
 
     def __repr__(self):
         return "<Location %r>" % (self.location)

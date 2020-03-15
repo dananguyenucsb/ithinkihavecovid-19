@@ -4,13 +4,14 @@ from model import app, db
 from sqlalchemy import exc, func
 from flask import Blueprint, render_template, flash
 from forms.entry_forms import CreateEntryForm, CoronaSearchForm
-from model import User, db
+from model import User, db, GOOGLEMAPS_KEY
 from flask import current_app, redirect, request, url_for
 from flask_paginate import Pagination, get_page_args
-
+from flask_googlemaps import Map, GoogleMaps
+from geopy.geocoders import Nominatim
 import requests
-
-
+from urllib.parse import quote
+# https://github.com/flask-extensions/Flask-GoogleMaps
 # main = Blueprint('main', __name__, template_folder='templates')
 
 
@@ -20,9 +21,27 @@ import requests
 #     current_app.logger.info("Displaying all entries.")
 
 #     return render_template("entries.htm", entries=entries)
+GoogleMaps(app)
+
+
+def get_coordinates(address):
+    # geolocator = Nominatim(user_agent="coronatracker")
+    # location = geolocator.geocode(address)
+    location = 'https://nominatim.openstreetmap.org/search/' + \
+        quote(address)+"?format=json&addressdetails=1&limit=1&polygon_svg=1"
+    response = requests.get(location).json()
+    # print(location)
+    # print(response)
+    # print(location)
+    return response[0]["lat"] + " " + response[0]["lon"]
+
 
 def get_entries(offset=0, per_page=10):
     return User.query.order_by(User.id.desc()).offset(offset).limit(per_page)
+
+
+def get_entries_for_map():
+    return User.query.with_entities(func.count(User.id), User.coordinates).filter(User.coordinates != "CANT VERIFY").group_by(User.coordinates).all()
 
 
 def get_results(qry, offset=0, per_page=10):
@@ -31,6 +50,7 @@ def get_results(qry, offset=0, per_page=10):
 
 @app.route('/', methods=['GET', 'POST'])
 def create_entry():
+    # create pagination
     page, per_page, offset = get_page_args(page_parameter='page',
                                            per_page_parameter='per_page')
     total = User.query.count()
@@ -38,6 +58,28 @@ def create_entry():
     pagination = Pagination(page=page, per_page=per_page, total=total,
                             css_framework='bootstrap4')
 
+    # for map
+    map_entries = get_entries_for_map()
+    # print(map_entries)
+    # map_coordinates = []
+
+    # for entry in map_entries:
+    #     address = str(entry[1]+" "+entry[2])
+    #     map_coordinates.append(get_coordinates(address))
+
+    # create map
+
+    mymap = Map(
+        identifier="view-side",
+        # lat=float(map_entries[0][1].split(" ")[0]),
+        # lng=float(map_entries[0][1].split(" ")[1]),
+        lat=37.4300,
+        lng=-122.1400,
+        markers=[(float(coord[1].split(" ")[0]), float(coord[1].split(" ")[1]))
+                 for coord in map_entries]
+    )
+
+    # create forms
     form = CreateEntryForm()
 
     print("CREATE ENTRY REQ METHOD: " + request.method)
@@ -48,23 +90,34 @@ def create_entry():
         # if behind a proxy
         ip_address = request.environ['HTTP_X_FORWARDED_FOR']
 
-    try:
-        resp = requests.get(
-            'http://ip-api.com/json/{}'.format(ip_address)).json()
-        if resp["status"] == "success":
-            form.ip_address.data = resp["regionName"] + \
-                ", "+resp["city"]+", "+resp["country"]
-        else:
-            form.ip_address.data = "CANT VERIFY"
-    except Exception as e:
-        form.ip_address.data = "CANT VERIFY"
+    # try:
+    #     resp = requests.get(
+    #         'http://ip-api.com/json/{}'.format(ip_address)).json()
+    #     if resp["status"] == "success":
+    #         form.ip_address.data = resp["city"] + \
+    #             " "+resp["regionName"]+" "+resp["country"]
+    #     else:
+    #         form.ip_address.data = "CANT VERIFY"
+    # except Exception as e:
+    #     form.ip_address.data = "CANT VERIFY"
     print("Going in")
+    form.ip_address.data = "san jose california usa"
+
+    if form.ip_address.data != "CANT VERIFY":
+        try:
+            form.coordinates.data = str(
+                get_coordinates(form.ip_address.data))
+        except:
+            form.coordinates.data = "CANT VERIFY"
+    else:
+        form.coordinates.data = "CANT VERIFY"
 
     if request.method == 'POST':
         if form.validate():
             print("IT WORKS")
+
             info = User(form.city.data.lower(), form.state.data.lower(), form.age.data,
-                        str(form.symptoms.data), form.ip_address.data.lower(), form.tested.data, form.in_contact.data)
+                        str(form.symptoms.data), form.ip_address.data.lower(), form.tested.data, form.in_contact.data, form.coordinates.data)
             db.session.add(info)
             db.session.commit()
             return redirect('/')
@@ -75,7 +128,8 @@ def create_entry():
                            entries=pagination_entries,
                            page=page,
                            per_page=per_page,
-                           pagination=pagination,)
+                           pagination=pagination,
+                           mymap=mymap)
 
 
 @app.route('/results', methods=['GET', 'POST'])

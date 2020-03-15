@@ -3,6 +3,10 @@
 
 <html>
   <head>
+    {{mymap.js}}
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
+
     <!-- <title>Bootstrap Modal</title> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <!-- Bootstrap -->
@@ -80,6 +84,7 @@
       </ul>
       {% endif %} {% endwith %}
       <h1>Coronavirus Tracker</h1>
+      {{mymap.html}}
       <!-- <div class="top-pad">
         <table class="table table-striped">
           <tr>
@@ -213,7 +218,8 @@
                 {{form.in_contact}}
               </div>
               <div class="modal-footer">
-                {{ form.recaptcha }} {% if form.errors %}
+                <div class="g-recaptcha" data-sitekey="GOOGLE_RECAPTCHA_SITE_KEY"></div>
+                {% if form.errors %}
                 <div class="alert alert-danger" role="alert">
                   {{ form.errors }}
                 </div>
