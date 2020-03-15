@@ -63,8 +63,8 @@ def create_entry():
 
     mymap = Map(
         identifier="view-side",
-        lat=37.4300,
-        lng=-122.1400,
+        lat=map_entries[0][1].split(" ")[0],
+        lng=map_entries[0][1].split(" ")[1],
         markers=[{"lat": float(coord[1].split(" ")[0]), "lng":float(coord[1].split(" ")[1]), "infobox": str(coord[0])}
                  for coord in map_entries],
         style="height:400px;width:100%;margin:0;"
