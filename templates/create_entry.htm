@@ -218,7 +218,8 @@
                 {{form.in_contact}}
               </div>
               <div class="modal-footer">
-                <div class="g-recaptcha" data-sitekey="GOOGLE_RECAPTCHA_SITE_KEY"></div>
+                <!-- <div class="g-recaptcha" data-sitekey="GOOGLE_RECAPTCHA_SITE_KEY"></div> -->
+                {{form.recaptcha}}
                 {% if form.errors %}
                 <div class="alert alert-danger" role="alert">
                   {{ form.errors }}
